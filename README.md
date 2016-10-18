@@ -1,79 +1,106 @@
-[![Issue Stats](http://issuestats.com/github/reidev275/Fix/badge/issue?style=flat-square)](http://issuestats.com/github/reidev275/Fix)
-[![Issue Stats](http://issuestats.com/github/reidev275/Fix/badge/pr?style=flat-square)](http://issuestats.com/github/reidev275/Fix)
-[![Build status](https://ci.appveyor.com/api/projects/status/94dsmj5nrnlbvykp?svg=true)](https://ci.appveyor.com/project/reidev275/fix/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/mmy7xtj3ecy8il5e?svg=true)](https://ci.appveyor.com/project/reidev275/forge)
+[![Build Status](https://travis-ci.org/fsprojects/Forge.svg?branch=master)](https://travis-ci.org/fsprojects/Forge)
 
-#Fix (Mix for F#)
-Fix is a command line tool that provides tasks for creating F# projects with no dependence on other languages.
+[![Join the chat at https://gitter.im/fsprojects/Forge](https://badges.gitter.im/fsprojects/Forge.svg)](https://gitter.im/fsprojects/Forge?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-When called without any arguments Fix automatically goes into an interactive mode.
+
+#Forge (F# Project Builder)
+
+[![Join the chat at https://gitter.im/fsharp-editing/Forge](https://badges.gitter.im/fsharp-editing/Forge.svg)](https://gitter.im/fsharp-editing/Forge?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Forge is a command line tool that provides tasks for creating F# projects with no dependence on other languages.
+
+When called without any arguments Forge automatically goes into an interactive mode.
 
 ### Available Commands
 
-     new [projectName] [projectDir] [templateName] [--no-paket]- Creates a new project with the given name, in given directory (relative to working directory) and given template. If parameters are not provided, program prompts user for them. Uses Paket, unless `--no-paket` flag is specified\n\
-     file add [fileName] - Adds a file to the current folder and project.
-     file remove [fileName] - Removes a file from the current folder and project.
-     update paket        - Updates Paket to latest version
-     update fake         - Updates FAKE to latest version
-     paket [args]        - Runs Paket with given arguments
-     fake [args]         - Runs FAKE with given arguments
-     refresh             - Refreshes the template cache
-     help                - Displays this help
-     exit                - Exit interactive mode
+    Available parameters:
+        new: <project|file> Create new file or project
+        add: <file|reference|project> Adds file, reference or project reference
+        remove: <file|folder|reference|project> Removes file, folder, reference or project reference
+        rename: <project|file> Renames file or project
+        move: <file> Move the file within the project hierarchy
+        list: <files|projects|references|projectReferences|templates|gac> List files, project in solution, references, project references, avaliable templates or libraries installed in gac
+        update: <paket|fake> Updates Paket or FAKE
+        paket: Runs Paket
+        fake: Runs FAKE
+        refresh: Refreshes the template cache
+        exit [quit|-q]: Exits interactive mode
+        --help [-h|/h|/help|/?]: display this list of options.
 
-### Creating A project
+### Creating a project
 
-    fix new [projectName]
+    new project [--name <string>] [--dir <string>] [--template <string>] [--no-paket]
 
-On the first run Fix will download the templates found in the [Generator F# Repository](https://github.com/fsprojects/generator-fsharp) and then allow you to choose which template you'd like to base your new project from.
+On the first run Forge will download the templates found in the [Forge Repository](https://github.com/fsprojects/forge/tree/templates) and then allow you to choose which template you'd like to base your new project from.
 
-	C:\Dev>c:\tools\fix\fix.exe
+	C:\Dev>c:\tools\forge\forge.exe
 	>
-	Fix (Mix for F#)
-	Available Commands:
-	 new [projectName] - Creates a new project with the given name
-	 refresh           - Refreshes the template cache
-	 help              - Displays this help
+	Forge (F# Project Builder)
+	Available commands:
+        new: Create new project
+        file: Adds or removes file from current folder and project.
+        reference: Adds or removes reference from current project.
+        update: Updates Paket or FAKE
+        paket: Runs Paket
+        fake: Runs FAKE
+        refresh: Refreshs the template cache
+        help: Displays help
+        exit: Exits interactive mode
 
-	> new MySuaveProject
+	> new project --name MySuaveProject --dir src
 	Choose a template:
 	 - aspwebapi2
-	 - classlib
-	 - console
-	 - fslabbasic
-	 - fslabjournal
-	 - sln
-	 - suave
-	 - websharperserverclient
-	 - websharperspa
-	 - windows
+     - classlib
+     - console
+     - fslabbasic
+     - fslabjournal
+     - pcl259
+     - servicefabrichost
+     - servicefabricsuavestateless
+     - sln
+     - suave
+     - suaveazurebootstrapper
+     - websharperserverclient
+     - websharperspa
+     - websharpersuave
+     - windows
 
 	> suave
-	Fixing template suave
+	Forging template suave
 	Creating C:\Dev\MySuaveProject
 	Changing filenames from ApplicationName.* to MySuaveProject.*
 	Changing namespace to MySuaveProject
 	Changing guid to bb3d79ee-318d-435f-8807-54b2585b057c
 	Done!
 
-## Files within a project
+Unless `--no-paket` flag is used, solution folder (folder in which `Forge` is running) will contain `.paket` folder and `paket.dependencies` and `paket.lock` file. Project folder will contain `paket.references` file.
 
-### Adding a file to a project
+Unless `--no-fake` flag is used, solution folder (folder in which `Forge` is running) will contain `build.fsx`, `build.cmd`, and `build.sh` files. It won't override previously existing files.
 
-	fix file add [fileName]
-
-Adds a file to the current folder and project.  If more than one project file exists in the current directory you will be prompted which project you wish to add the file to.
-
-### Removing a file from a project
-
-	fix file remove [fileName]
-
-Removes a file from the current folder and project.  If more than one project file exists in the current directory you will be prompted which project you wish to remove the file from.
 
 ### Installing
 
-This is still in very early stages so you'll need to clone the repo, build the source, and then move the files in your bin folder to a location of your choosing.
+#### Via Scoop.sh (Windows)
+
+You can install Forge via the [Scoop](http://scoop.sh/) package manager on Windows
+
+    scoop install forge
+
+#### Via Homebrew (OSX)
+
+You can install Forge via the [Homebrew](http://brew.sh) package manager on OS X
+
+    brew tap samritchie/forge && brew install forge
+
+#### Other
+
+You can download one of the releases found at https://github.com/fsprojects/Forge/releases
+
+Alternately you can clone the repo, build the source, and then move the files in your bin folder to a location of your choosing.
 
 ## Maintainer(s)
 
 - [@ReidNEvans](https://twitter.com/reidNEvans)
 - [Krzysztof-Cieslak] (https://github.com/Krzysztof-Cieslak)
+- [cloudRoutine](https://github.com/cloudRoutine/)
